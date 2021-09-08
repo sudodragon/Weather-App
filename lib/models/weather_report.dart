@@ -1,3 +1,5 @@
+import 'package:weather/models/pretty_date.dart';
+
 class WeatherReport {
   num? lat;
   num? lon;
@@ -125,6 +127,12 @@ class Current {
         '\tcurrent.snow: $snow\n'
         '\tcurrent.weather: $weather';
   }
+
+  String get formattedDT =>
+      PrettyDate(dateTime: DateTime.fromMillisecondsSinceEpoch(dt! * 1000))
+          .toString();
+
+  
 }
 
 class Weather {

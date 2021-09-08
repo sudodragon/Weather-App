@@ -10,10 +10,11 @@ class WeatherDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //int dt = report.current!.dt! * 1000;
+    int sunrise = report.current!.sunrise! * 1000;
     //int dtn = DateTime.now().millisecondsSinceEpoch;
-    //print('DT: $dt');
-    //print('Parsed DT: ${DateTime.fromMillisecondsSinceEpoch(dt)}');
+    print('Sunrise: $sunrise');
+    print(
+        'Parsed DT: ${DateTime.fromMillisecondsSinceEpoch(report.current!.sunrise! * 1000)}');
 
     return Scaffold(
         appBar: AppBar(
@@ -21,15 +22,11 @@ class WeatherDetailScreen extends StatelessWidget {
         ),
         body: Column(
           children: [
-            detailItem(Icons.date_range, formatPrettyDate(report.current!.dt!)),
+            detailItem(Icons.date_range, report.current!.formattedDT),
+            detailItem(Icons.wb_sunny,
+                '${DateTime.fromMillisecondsSinceEpoch(report.current!.sunrise! * 1000)}'),
             detailItem(
-                Icons.wb_sunny,
-                formatPrettyDate(
-                    report.current!.sunrise! - report.timezoneOffset!)),
-            detailItem(
-                Icons.mode_night,
-                formatPrettyDate(
-                    report.current!.sunset! - report.timezoneOffset!)),
+                Icons.mode_night, ''),
           ],
         ));
   }
@@ -39,11 +36,4 @@ Widget detailItem(IconData icon, String text) {
   return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [Icon(icon), Text(text)]);
-}
-
-String formatPrettyDate(int secondsSinceEpoch) {
-  return PrettyDate(
-          dateTime:
-              DateTime.fromMillisecondsSinceEpoch(secondsSinceEpoch * 1000))
-      .prettyTime;
 }
