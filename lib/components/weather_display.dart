@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather/components/day_temp_bar.dart';
 import 'package:weather/models/weather_report.dart';
 import '../models/location.dart';
 
@@ -55,7 +54,7 @@ class _WeatherDisplayState extends State<WeatherDisplay> {
         style: Theme.of(context).textTheme.headline4);
 
     final Text temperature = Text(
-      '${widget.report.current!.temp!.round()}',
+      '${widget.report.current!.temp}',
       style: Theme.of(context).textTheme.headline4,
     );
 
@@ -67,7 +66,7 @@ class _WeatherDisplayState extends State<WeatherDisplay> {
           style: Theme.of(context).textTheme.headline4,
         ),
         Text(
-          '${widget.report.current?.feelsLike?.round()}',
+          '${widget.report.current?.feelsLike}',
           style: Theme.of(context).textTheme.headline1,
         ),
       ],
@@ -96,31 +95,7 @@ class _WeatherDisplayState extends State<WeatherDisplay> {
             setState(() {});
           },
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: tempBarList(),
-        )
       ]),
     );
-  }
-
-  List<DayTempBar> tempBarList() {
-    String days = 'MTWRFSS';
-    int today = DateTime.now().weekday - 1;
-
-    List<DayTempBar> list = [];
-    int i = 0;
-
-    while (i < 7) {
-      list.add(DayTempBar(
-        high: widget.report.daily![i].temp!.max!.toDouble(),
-        low: widget.report.daily![i].temp!.min!.toDouble(),
-        day: days[(i + today) % 7],
-      ));
-      i++;
-    }
-
-    return list;
   }
 }

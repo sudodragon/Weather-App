@@ -1,17 +1,17 @@
 import 'package:weather/models/pretty_date.dart';
 
 class WeatherReport {
-  num? lat;
-  num? lon;
-  String? timezone;
-  int? timezoneOffset;
-  Current? current;
-  List<Minutely>? minutely;
-  List<Hourly>? hourly;
-  List<Daily>? daily;
-  List<dynamic>? alerts;
+  final num? lat;
+  final num? lon;
+  final String? timezone;
+  final int? timezoneOffset;
+  final Current? current;
+  final List<Minutely>? minutely;
+  final List<Hourly>? hourly;
+  final List<Daily>? daily;
+  final List<dynamic>? alerts;
 
-  WeatherReport(
+  const WeatherReport(
       {this.lat,
       this.lon,
       this.timezone,
@@ -50,25 +50,60 @@ class WeatherReport {
 }
 
 class Current {
-  int? dt;
-  int? sunrise;
-  int? sunset;
-  num? temp;
-  num? feelsLike;
-  int? pressure;
-  int? humidity;
-  num? dewPoint;
-  num? uvi;
-  int? clouds;
-  int? visibility;
-  num? windSpeed;
-  num? windGust;
-  int? windDeg;
-  Rain? rain;
-  Snow? snow;
-  List<Weather>? weather;
+  final int? _dt;
+  final int? _sunrise;
+  final int? _sunset;
+  final num? _temp;
+  final num? _feelsLike;
+  final int? _pressure;
+  final int? _humidity;
+  final num? _dewPoint;
+  final num? _uvi;
+  final int? _clouds;
+  final int? _visibility;
+  final num? _windSpeed;
+  final num? _windGust;
+  final int? _windDeg;
+  final Rain? _rain;
+  final Snow? _snow;
+  final List<Weather>? _weather;
 
-  Current(
+  const Current(
+      {dt,
+      sunrise,
+      sunset,
+      temp,
+      feelsLike,
+      pressure,
+      humidity,
+      dewPoint,
+      uvi,
+      clouds,
+      visibility,
+      windSpeed,
+      windGust,
+      windDeg,
+      rain,
+      snow,
+      weather})
+      : _dt = dt,
+        _sunrise = sunrise,
+        _sunset = sunset,
+        _temp = temp,
+        _feelsLike = feelsLike,
+        _pressure = pressure,
+        _humidity = humidity,
+        _dewPoint = dewPoint,
+        _uvi = uvi,
+        _clouds = clouds,
+        _visibility = visibility,
+        _windSpeed = windSpeed,
+        _windGust = windGust,
+        _windDeg = windDeg,
+        _rain = rain,
+        _snow = snow,
+        _weather = weather;
+  /*
       {this.dt,
       this.sunrise,
       this.sunset,
@@ -86,7 +121,7 @@ class Current {
       this.rain,
       this.snow,
       this.weather});
-
+*/
   factory Current.fromJSON(Map<String, dynamic> json) {
     return Current(
         dt: json['dt'],
@@ -109,30 +144,51 @@ class Current {
   }
 
   String toString() {
-    return '\n\tcurrent.current.dt: $dt\n'
-        '\tcurrent.sunrise: $sunrise\n'
-        '\tcurrent.sunset: $sunset\n'
-        '\tcurrent.temp: $temp\n'
-        '\tcurrent.feels_like: $feelsLike\n'
-        '\tcurrent.pressure: $pressure\n'
-        '\tcurrent.humidity: $humidity\n'
-        '\tcurrent.dew_point: $dewPoint\n'
-        '\tcurrent.uvi: $uvi\n'
-        '\tcurrent.clouds: $clouds\n'
-        '\tcurrent.visibility: $visibility\n'
-        '\tcurrent.wind_speed: $windSpeed\n'
-        '\tcurrent.wind_gust: $windGust\n'
-        '\tcurrent.wind_deg: $windDeg\n'
-        '\tcurrent.rain: $rain\n'
-        '\tcurrent.snow: $snow\n'
-        '\tcurrent.weather: $weather';
+    return '\n\tcurrent.current.dt: $_dt\n'
+        '\tcurrent.sunrise: $_sunrise\n'
+        '\tcurrent.sunset: $_sunset\n'
+        '\tcurrent.temp: $_temp\n'
+        '\tcurrent.feels_like: $_feelsLike\n'
+        '\tcurrent.pressure: $_pressure\n'
+        '\tcurrent.humidity: $_humidity\n'
+        '\tcurrent.dew_point: $_dewPoint\n'
+        '\tcurrent.uvi: $_uvi\n'
+        '\tcurrent.clouds: $_clouds\n'
+        '\tcurrent.visibility: $_visibility\n'
+        '\tcurrent.wind_speed: $_windSpeed\n'
+        '\tcurrent.wind_gust: $_windGust\n'
+        '\tcurrent.wind_deg: $_windDeg\n'
+        '\tcurrent.rain: $_rain\n'
+        '\tcurrent.snow: $_snow\n'
+        '\tcurrent.weather: $_weather';
   }
 
-  String get formattedDT =>
-      PrettyDate(dateTime: DateTime.fromMillisecondsSinceEpoch(dt! * 1000))
-          .toString();
+  String get dt =>
+      PrettyDate(dateTime: DateTime.fromMillisecondsSinceEpoch(_dt! * 1000))
+          .prettyDate;
+  String get sunrise => _formatTime(_sunrise!);
+  String get sunset => _formatTime(_sunset!);
+  String get temp => '${_temp!.round()} \u2109';  // \u2190 is deg Fahrenheit
+  String get feelsLike => '${_feelsLike!.round()} \u2109';
+  String get pressure => '$_pressure hPa';
+  String get humidity => '$_humidity %';
+  String get dewPoint => '${_dewPoint!.round()} \u2109'; 
+  String get uvi => '$_uvi';
+  String get clouds => '$_clouds %';
+  String get visibility => '$_visibility meters';
+  String get windSpeed => '$_windSpeed mph';
+  String? get windGust => _windGust == null ? null : '$_windGust mph';
+  String get windDeg => '$_windDeg \u00B0';
+  get rain => _rain;
+  get snow => _snow;
+  get weather => _weather;
 
-  
+  String _formatTime(int _secondsSinceEpoch) {
+    return PrettyDate(
+            dateTime:
+                DateTime.fromMillisecondsSinceEpoch(_secondsSinceEpoch * 1000))
+        .prettyTime;
+  }
 }
 
 class Weather {
